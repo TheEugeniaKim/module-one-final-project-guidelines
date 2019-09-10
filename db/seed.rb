@@ -1,4 +1,4 @@
-# create books
+
 
 Book.create(title: "Harry Potter 1", author: "JK Rowling", fiction_nonfiction: "fiction", 
 genre: "fantasy", publication_year: 1997)

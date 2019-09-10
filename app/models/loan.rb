@@ -1,4 +1,4 @@
 class Loan < ActiveRecord::Base
-    belongs_to :books
-    belongs_to :patrons
+    belongs_to :book
+    belongs_to :patron
 end
