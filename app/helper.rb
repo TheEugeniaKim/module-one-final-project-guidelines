@@ -6,9 +6,11 @@ def start
         puts "Welcome Back"
     elsif answer == "N"
         puts "Create Account"
-        puts "Enter name: "
+        puts "Enter name: " 
         name = gets.chomp
-        Patron.new(name)
+        puts "Enter birthdate (YYYY-DD-MM): "
+        birthdate = gets.chomp
+        Patron.create(name: name, birthdate: birthdate)
     end
 end
 

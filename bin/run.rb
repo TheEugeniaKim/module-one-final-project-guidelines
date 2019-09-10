@@ -4,5 +4,6 @@ require 'pry'
 
 require_relative '../app/helper.rb'
 
-binding.pry
+# binding.pry
 
+start

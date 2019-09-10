@@ -10,7 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_09_204801) do
+ActiveRecord::Schema.define(version: 2019_09_09_215955) do
+
+  create_table "books", force: :cascade do |t|
+    t.string "title"
+    t.string "author"
+    t.string "fiction_nonfiction"
+    t.string "genre"
+    t.integer "publication_year"
+  end
+
+  create_table "loans", force: :cascade do |t|
+    t.integer "patron_id"
+    t.integer "book_id"
+    t.datetime "timestamps"
+  end
 
   create_table "patrons", force: :cascade do |t|
     t.string "name"

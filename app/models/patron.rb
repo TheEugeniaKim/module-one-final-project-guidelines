@@ -1,4 +1,4 @@
 class Patron < ActiveRecord::Base
-    # has_many :books
-    # attr_accessor :name
+    has_many :loans
+    has_many :books, through: :loans
 end
