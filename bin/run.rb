@@ -3,7 +3,7 @@ require 'pry'
 
 
 require_relative '../app/helper.rb'
-
-# binding.pry
+require_relative '../db/seed.rb'
+#binding.pry
 
 start
