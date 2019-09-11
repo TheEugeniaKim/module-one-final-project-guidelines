@@ -2,11 +2,6 @@ class Helper
 
     attr_accessor :current_patron
 
-    def initialize()
-        # @current_patron = current_patron
-        # binding.pry
-    end
-
     def start
         puts "Welcome to the library"
         puts "Do you have an account with us? (Y/N)"
@@ -26,6 +21,7 @@ class Helper
         puts "Enter birthdate (YYYY-DD-MM): "
         birthdate = gets.chomp
         @current_patron = Patron.create(name: name, birthdate: birthdate)
+        
         main_menu
     end
 
@@ -49,46 +45,76 @@ class Helper
         puts "2. Search Library Catalog"
         puts "3. Check out book"
         puts "4. Logout"
-        input = gets.chomp 
+        input = gets.chomp
         if input == "1"
             view_my_books    
         elsif input == "2"
             search_library_catalog
         elsif input == "3"
             check_out_book
-        # elsif input == 4
-        #     @current_patron = nil 
-        #     puts "Goodbye"
-        #     start 
         end
     end
 
     def view_my_books
-        binding.pry
-        @current_patron.books 
+        my_books = @current_patron.books
+        my_books.each do |book|
+            puts book.title
+            puts book.author
+            puts book.fiction_nonfiction
+            puts book.genre
+            puts book.publication_year
+            puts "*" * 20
+        end
+        return_to_main_menu
+    end
+
+    def return_to_main_menu
+        puts "Return to main menu? (Y/N)?"
+        input = gets.chomp.upcase
+        if input == "Y"
+            main_menu
+        end
     end
 
     def search_library_catalog
         puts "Enter title you want to search: "
-        input = gets.chomp 
-        binding.pry
-        Book.find_by(title: input)
+        input = gets.chomp
+        searched_book = Book.find_by(title: input)
+        
+        if searched_book
+            puts "Title: #{searched_book.title}"
+            puts "Author: #{searched_book.author}"
+        else 
+            puts "Sorry, book not found."
+        end
+        
+        puts "Search again? (Y/N)"
+        answer = gets.chomp.upcase
+        if answer == "Y"
+            search_library_catalog
+        elsif answer == "N"
+            return_to_main_menu
+        end
     end
 
     def check_out_book
         puts "Please enter the title of the book you'd like to check out: "
-        input = gets.chomp 
-        puts Book.find_by(title: input)
-        checkout_book = Book.input.title  
-        puts "Is this the book you want? (Y/N)"
-        answer = gets.chomp 
-        if answer == "Y" or "y"  
-            binding.pry
-            Loan.create(patron_id: @current_patron.patron_id, book_id: checkout_book.book_id)
-        elsif answer == "N" or "n"
-            puts "We do not have the book you are looking for please search the library catalog for our books"
-        end               
+        input = gets.chomp
+        book_to_loan = Book.find_by(title: input)
+        if book_to_loan
+            @current_patron.books << book_to_loan
+        else 
+            puts "Sorry, book not found."
+        end
+
+        puts "Try again? (Y/N)"
+        answer = gets.chomp.upcase
+        if answer == "Y"
+            check_out_book
+        elsif answer == "N"
+            return_to_main_menu
+        end
+        
     end
 
-     
 end
