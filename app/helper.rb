@@ -101,19 +101,23 @@ class Helper
         puts "Please enter the title of the book you'd like to check out: "
         input = gets.chomp
         book_to_loan = Book.find_by(title: input)
+
         if book_to_loan
             @current_patron.books << book_to_loan
+            puts "Book checked out."
+            return_to_main_menu
         else 
             puts "Sorry, book not found."
+            puts "Try again? (Y/N)"
+            answer = gets.chomp.upcase
+            if answer == "Y"
+                check_out_book
+            elsif answer == "N"
+                return_to_main_menu
+            end
         end
 
-        puts "Try again? (Y/N)"
-        answer = gets.chomp.upcase
-        if answer == "Y"
-            check_out_book
-        elsif answer == "N"
-            return_to_main_menu
-        end
+        
         
     end
 
