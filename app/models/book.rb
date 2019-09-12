@@ -3,7 +3,6 @@ class Book < ActiveRecord::Base
     has_many :patrons, through: :loans
 
     def self.find_all_books_by_author(author_search)
-        binding.pry
         Book.all.select {|book| book.author == author_search}
     end
 
