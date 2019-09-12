@@ -2,14 +2,28 @@ require_relative "models/book.rb"
 
 class Helper
 
-    #test commit to future branch
-
     attr_accessor :current_patron 
 
+    def welcome_page 
+        print ("""
+                   ##       #### ########  ########     ###    ########  ##    ##    ##     ##  #######  ##     ## ######## 
+                   ##        ##  ##     ## ##     ##   ## ##   ##     ##  ##  ##     ##     ## ##     ## ###   ### ##       
+                   ##        ##  ##     ## ##     ##  ##   ##  ##     ##   ####      ##     ## ##     ## #### #### ##       
+                   ##        ##  ########  ########  ##     ## ########     ##       ######### ##     ## ## ### ## ######   
+                   ##        ##  ##     ## ##   ##   ######### ##   ##      ##       ##     ## ##     ## ##     ## ##       
+                   ##        ##  ##     ## ##    ##  ##     ## ##    ##     ##       ##     ## ##     ## ##     ## ##       
+                   ######## #### ########  ##     ## ##     ## ##     ##    ##       ##     ##  #######  ##     ## ########
+                   
+                ***************************************************************************************************************
+        """)
+    end
+
     def start
-        puts "Welcome to the library"
-        puts "Do you have an account with us? (Y/N)"
+        welcome_page
+        puts "                                                   Welcome to the library"
+        puts "                                                   Do you have an account with us? (Y/N)"
         answer = gets.chomp
+        system 'clear'
         if answer == "Y"
             puts "Welcome Back"
             login
@@ -42,6 +56,7 @@ class Helper
     end
 
     def main_menu 
+        system 'clear'
         puts "Welcome to Main Menu"
         puts "Please select an action by typing a number"
         puts "1. View My Books on Loan"
@@ -55,10 +70,13 @@ class Helper
             search_library_catalog
         elsif input == "3"
             check_out_book
+        elsif input == "4"
+            welcome_page
         end
     end
 
     def view_my_books
+        system 'clear'
         my_books = @current_patron.books
         my_books.each do |book|
             puts book.title
@@ -80,6 +98,7 @@ class Helper
     end
 
     def search_library_catalog
+        system 'clear'
         puts "Please select how you would like to search by inputting a number: "
         puts "1. Search by title"
         puts "2. Search by author"
@@ -157,6 +176,7 @@ class Helper
     end
 
     def check_out_book
+        system 'clear'
         puts "Please enter the title of the book you'd like to check out: "
         input = gets.chomp
         book_to_loan = Book.find_by(title: input)
