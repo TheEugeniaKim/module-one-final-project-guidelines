@@ -158,6 +158,8 @@ class Helper
             if searched_book 
                 puts "Title: #{searched_book.title}"
                 puts "Author: #{searched_book.author}"
+                puts "*" * 20
+                search_again
             else 
                 puts "Sorry, book not found."
                 search_again
@@ -177,6 +179,8 @@ class Helper
                 puts book.publication_year
                 puts "*" * 25
             end
+            puts "*" * 20
+            search_again
         else 
             puts "Sorry, book not found."
             search_again
@@ -196,6 +200,8 @@ class Helper
                 puts book.publication_year
                 puts "*" * 25
             end
+            puts "*" * 20
+            search_again
         else 
             puts "Sorry, book not found."
             search_again
