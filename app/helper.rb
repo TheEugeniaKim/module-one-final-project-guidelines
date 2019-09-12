@@ -21,7 +21,6 @@ class Helper
         puts "Enter birthdate (YYYY-DD-MM): "
         birthdate = gets.chomp
         @current_patron = Patron.create(name: name, birthdate: birthdate)
-        
         main_menu
     end
 
