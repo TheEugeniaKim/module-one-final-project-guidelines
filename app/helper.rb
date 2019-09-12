@@ -1,6 +1,10 @@
+require_relative "models/book.rb"
+
 class Helper
 
-    attr_accessor :current_patron
+    #test commit to future branch
+
+    attr_accessor :current_patron 
 
     def start
         puts "Welcome to the library"
@@ -76,17 +80,73 @@ class Helper
     end
 
     def search_library_catalog
+        puts "Please select how you would like to search by inputting a number: "
+        puts "1. Search by title"
+        puts "2. Search by author"
+        puts "3. Search by genre"
+        search_selection = gets.chomp 
+
+        if search_selection == "1"
+            search_by_title
+        elsif search_selection == "2"
+            search_by_author
+        elsif search_selection == "3"
+            search_by_genre
+        end
+    end
+
+    def search_by_title
         puts "Enter title you want to search: "
-        input = gets.chomp
-        searched_book = Book.find_by(title: input)
-        
-        if searched_book
-            puts "Title: #{searched_book.title}"
-            puts "Author: #{searched_book.author}"
+            title_search = gets.chomp
+            searched_book = Book.find_by(title: title_search)
+            if searched_book 
+                puts "Title: #{searched_book.title}"
+                puts "Author: #{searched_book.author}"
+            else 
+                puts "Sorry, book not found."
+                search_again
+            end
+    end
+
+    def search_by_author
+        puts "Enter author you want to search: "
+        author_search = gets.chomp 
+        results = Book.find_all_books_by_author(author_search)
+        if results
+            results.each do |book|
+                puts book.title
+                puts book.author
+                puts book.fiction_nonfiction
+                puts book.genre
+                puts book.publication_year
+                puts "*" * 25
+            end
         else 
             puts "Sorry, book not found."
+            search_again
         end
-        
+    end
+
+    def search_by_genre
+        puts "Enter genre you want to search: "
+        genre_search = gets.chomp 
+        results = Book.find_all_books_by_genre(genre_search)
+        if results
+            results.each do |book|
+                puts book.title
+                puts book.author
+                puts book.fiction_nonfiction
+                puts book.genre
+                puts book.publication_year
+                puts "*" * 25
+            end
+        else 
+            puts "Sorry, book not found."
+            search_again
+        end
+    end
+
+    def search_again
         puts "Search again? (Y/N)"
         answer = gets.chomp.upcase
         if answer == "Y"
@@ -115,9 +175,5 @@ class Helper
                 return_to_main_menu
             end
         end
-
-        
-        
     end
-
 end
