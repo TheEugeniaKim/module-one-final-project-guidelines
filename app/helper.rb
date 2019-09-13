@@ -5,6 +5,7 @@ class Helper
     attr_accessor :current_patron 
 
     def welcome_page 
+        system "clear"
         print ("""
                    ##       #### ########  ########     ###    ########  ##    ##    ##     ##  #######  ##     ## ######## 
                    ##        ##  ##     ## ##     ##   ## ##   ##     ##  ##  ##     ##     ## ##     ## ###   ### ##       
@@ -20,39 +21,69 @@ class Helper
 
     def start
         welcome_page
+        puts ""
         puts "                                                   Welcome to the library"
         puts "                                                   Do you have an account with us? (Y/N)"
-        answer = gets.chomp
+        puts "                                                   Exit (press 'q')"
+        answer = gets.chomp.upcase
         system 'clear'
         if answer == "Y"
-            puts "Welcome Back"
             login
         elsif answer == "N"
             create_account 
+        elsif answer == "Q"
+            system "clear"
+            abort 
         end
     end
 
+    def login
+        system "clear"
+        puts "Welcome Back"
+        puts "Enter username"
+        name = gets.chomp
+        puts "Enter birthdate"
+        birthdate = gets.chomp
+        set_current_patron(name, birthdate)
+        main_menu
+    end
+
     def create_account
+        system "clear"
         puts "Create Account"
         puts "Enter name: " 
         name = gets.chomp
-        puts "Enter birthdate (YYYY-DD-MM): "
+        puts "Enter birthdate (YYYY-MM-DD): "
         birthdate = gets.chomp
         @current_patron = Patron.create(name: name, birthdate: birthdate)
         main_menu
     end
 
-    def find_patron(patron_name, patron_birthdate)
-        Patron.find_by(name: patron_name, birthdate: patron_birthdate)
+    def set_current_patron(patron_name, patron_birthdate)
+        if find_patron(patron_name, patron_birthdate)
+            @current_patron = find_patron(patron_name, patron_birthdate) 
+        else       
+            incorrect_login
+        end
     end
 
-    def login
-        puts "Enter username"
-        name = gets.chomp
-        puts "Enter birthdate"
-        birthdate = gets.chomp
-        @current_patron = find_patron(name, birthdate) 
-        main_menu
+    def incorrect_login
+        system "clear"
+        puts "Sorry, no account found."
+        puts "Would you like to:"
+        puts "   1. Try again"
+        puts "   2. Exit"  
+        input = gets.chomp
+        if input == "1"
+            login
+        elsif input == "2"
+            welcome_page
+            start
+        end
+    end
+
+    def find_patron(patron_name, patron_birthdate)
+        Patron.find_by(name: patron_name, birthdate: patron_birthdate)
     end
 
     def main_menu 
@@ -76,6 +107,7 @@ class Helper
             return_book
         elsif input == "5"
             welcome_page
+            start
         end
     end
 
@@ -103,6 +135,10 @@ class Helper
         input = gets.chomp.upcase 
         if input == "Y"
             main_menu
+        elsif input == "N"
+            # add logout method
+            welcome_page
+            start
         end
     end
 
@@ -112,7 +148,7 @@ class Helper
         puts "1. Search by title"
         puts "2. Search by author"
         puts "3. Search by genre"
-        search_selection = gets.chomp 
+        search_selection = gets.chomp
 
         if search_selection == "1"
             search_by_title
@@ -130,6 +166,8 @@ class Helper
             if searched_book 
                 puts "Title: #{searched_book.title}"
                 puts "Author: #{searched_book.author}"
+                puts "*" * 20
+                search_again
             else 
                 puts "Sorry, book not found."
                 search_again
@@ -149,6 +187,8 @@ class Helper
                 puts book.publication_year
                 puts "*" * 25
             end
+            puts "*" * 20
+            search_again
         else 
             puts "Sorry, book not found."
             search_again
@@ -168,6 +208,8 @@ class Helper
                 puts book.publication_year
                 puts "*" * 25
             end
+            puts "*" * 20
+            search_again
         else 
             puts "Sorry, book not found."
             search_again
