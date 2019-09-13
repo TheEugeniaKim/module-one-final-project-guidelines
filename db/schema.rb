@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_09_215955) do
+ActiveRecord::Schema.define(version: 2019_09_12_193930) do
 
   create_table "books", force: :cascade do |t|
     t.string "title"
@@ -24,6 +24,7 @@ ActiveRecord::Schema.define(version: 2019_09_09_215955) do
     t.integer "patron_id"
     t.integer "book_id"
     t.datetime "timestamps"
+    t.string "status", default: "checked out"
   end
 
   create_table "patrons", force: :cascade do |t|

@@ -62,36 +62,45 @@ class Helper
         puts "1. View My Books on Loan"
         puts "2. Search Library Catalog"
         puts "3. Check out book"
-        puts "4. Logout"
+        puts "4. Return book"
+        puts "5. Logout"
         input = gets.chomp
         if input == "1"
-            view_my_books    
+            view_my_books
+            return_to_main_menu    
         elsif input == "2"
             search_library_catalog
         elsif input == "3"
             check_out_book
         elsif input == "4"
+            return_book
+        elsif input == "5"
             welcome_page
         end
     end
 
     def view_my_books
         system 'clear'
-        my_books = @current_patron.books
-        my_books.each do |book|
-            puts book.title
-            puts book.author
-            puts book.fiction_nonfiction
-            puts book.genre
-            puts book.publication_year
-            puts "*" * 20
+        # binding.pry
+        @current_patron.loans
+        my_loans = @current_patron.loans.select {|loan| loan.status == "checked out"}
+        if my_loans.each do |loan|
+                puts loan.book.title
+                puts loan.book.author
+                puts loan.book.fiction_nonfiction
+                puts loan.book.genre
+                puts loan.book.publication_year
+                puts loan.status
+                puts "*" * 20
+            end
+        else
+            puts "You do not have any loans"
         end
-        return_to_main_menu
     end
 
     def return_to_main_menu
         puts "Return to main menu? (Y/N)?"
-        input = gets.chomp.upcase
+        input = gets.chomp.upcase 
         if input == "Y"
             main_menu
         end
@@ -196,4 +205,31 @@ class Helper
             end
         end
     end
+    
+    def return_book
+        puts "These are your checked out books: "
+        view_my_books
+        puts "Please write the title of the book you'd like to return"
+        book_title = gets.chomp 
+        if Book.find_all_books_by_title(book_title)
+            found_book = Book.find_all_books_by_title(book_title)
+            loan = Loan.find_by(patron_id: @current_patron.id, book_id: found_book.id, status: "checked out")
+            loan.update(status: "available")
+            # loan.reload
+            @current_patron.loans.reset
+            # binding.pry     
+            puts "Your book has been returned"
+            puts "Would you like to return to the main menu? (Y/N)"
+            input = gets.chomp.upcase
+            if input == "Y"
+                main_menu
+            else
+                welcome_page
+            end
+        else
+            puts "Book title entered incorrectly please try again"
+            return_book
+        end
+    end
+
 end

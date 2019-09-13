@@ -2,6 +2,7 @@
 
 Book.destroy_all
 
+puts "creating books"
 hp1 = Book.create(title: "Harry Potter 1", author: "JK Rowling", fiction_nonfiction: "fiction", 
 genre: "fantasy", publication_year: 1997)
 
@@ -25,22 +26,26 @@ genre: "biography", publication_year: 1965)
 
 ggs = Book.create(title: "Guns, Germs, and Steel", author: "Malcolm X", fiction_nonfiction: "nonfiction", 
 genre: "general nonfiction", publication_year: 1997)
-
+puts "created books"
 #### Create Patron Instances
 
 Patron.destroy_all
 
+puts "creating patrons"
 eugenia = Patron.create(name: "Eugenia", birthdate: "1994-04-07")
 nick = Patron.create(name: "Nick", birthdate: "1991-09-05")
 bill = Patron.create(name: "Bill", birthdate: "2000-01-01")
 cindy = Patron.create(name: "Cindy", birthdate: "1995-12-12")
+puts "created patrons"
 
 #### Create Loan Instances
 
 Loan.destroy_all
 
-Loan.create(patron_id: eugenia.id, book_id: hp1.id)
-Loan.create(patron_id: eugenia.id, book_id: lr2.id)
-Loan.create(patron_id: nick.id, book_id: am.id)
-Loan.create(patron_id: bill.id, book_id: hp7.id)
+puts "creating loans"
+Loan.create(patron_id: eugenia.id, book_id: hp1.id, status: "checked out")
+Loan.create(patron_id: eugenia.id, book_id: lr2.id, status: "checked out")
+Loan.create(patron_id: nick.id, book_id: am.id, status: "checked out")
+Loan.create(patron_id: bill.id, book_id: hp7.id, status: "checked out")
+puts "created loans"
 
